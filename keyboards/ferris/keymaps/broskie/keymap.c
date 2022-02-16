@@ -11,44 +11,63 @@
 enum ferris_layers {
   _QWERTY,
   _LOWER,
-  _RAISE
+  _RAISE,
+  _SPECL
 };
 
 enum ferris_tap_dances {
   TD_Q_ESC
 };
 
-#define KC_CTSC RCTL_T(KC_SCLN)
+// control
 #define KC_CTLA LCTL_T(KC_A)
+#define KC_CTSC RCTL_T(KC_SCLN)
+// shift
 #define KC_LSHZ LSFT_T(KC_Z)
 #define KC_LSHD LSFT_T(KC_D)
 #define KC_RLSH RSFT_T(KC_SLSH)
 #define KC_RSHK RSFT_T(KC_K)
-#define KC_SPM1 LT(1, KC_SPC)
-#define KC_BSM2 LT(2, KC_BSPC)
-#define KC_GUTA GUI_T(KC_TAB)
-#define KC_CLGV CTL_T(KC_GRV)
+// alt/option
+#define KC_ALTS LALT_T(KC_S)
+#define KC_ALTL RALT_T(KC_L)
+// gui/command
+#define KC_GUIF LGUI_T(KC_F)
+#define KC_GUIJ RALT_T(KC_J)
+// Special/layer
+#define KC_SPL1 LT(_LOWER, KC_SPC)
+#define KC_BSL2 LT(_RAISE, KC_BSPC)
+#define KC_SWAP CG_TOGG // swap control and gui on both sides
+
+// #define KC_GUTA GUI_T(KC_TAB)
+// #define KC_CLGV CTL_T(KC_GRV)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT( /* QWERTY */
-    TD_Q_ESC,    KC_W,    KC_E,    KC_R,    KC_T,            KC_Y,    KC_U,  KC_I,    KC_O,   KC_P,
-    KC_CTLA, KC_S,    KC_LSHD, KC_F,    KC_G,            KC_H,    KC_J,  KC_RSHK, KC_L,   KC_SCLN,
-    KC_LSHZ, KC_X,    KC_C,    KC_V,    KC_B,            KC_N,    KC_M,  KC_COMM, KC_DOT, KC_RLSH,
-                                    KC_CLGV, KC_SPM1, KC_BSM2, KC_GUTA
+    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,            KC_Y,    KC_U,   KC_I,    KC_O,   KC_P,
+    KC_CTLA, KC_ALTS, KC_LSHD, KC_GUIF, KC_G,            KC_H,    KC_GUIJ,KC_RSHK, KC_ALTL,KC_CTSC,
+    KC_LSHZ, KC_X,    KC_C,    KC_V,    KC_B,            KC_N,    KC_M,   KC_COMM, KC_DOT, KC_RLSH,
+                                    KC_MEH, KC_SPL1, KC_BSL2, KC_TAB
   ),
 
   [_LOWER] = LAYOUT( /* [> LOWER <] */
     KC_1,    KC_2,    KC_3,    KC_4,    KC_5,            KC_6,    KC_7,    KC_8,    KC_9,    KC_0,
-    KC_GESC, KC_HOME, KC_PGDN, KC_PGUP, KC_END,          KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, KC_QUOT,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_BTN1, KC_BTN2,         KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_ENT,
-                                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS  
+    KC_GESC, KC_HOME, KC_END, KC_PGUP, KC_PGDN,          KC_MINS, KC_EQL,  KC_LPRN, KC_RPRN, KC_QUOT,
+    KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, KC_MPLY,         KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_ENT,
+                                    KC_SWAP, _______, KC_DELETE, _______  
   ),
 
   [_RAISE] = LAYOUT( /* [> RAISE <] */
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,           KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
-    KC_TAB,  KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_MINS, KC_EQL,  KC_LBRC, KC_RBRC, KC_PIPE,
-    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,         KC_UNDS, KC_PLUS, KC_TRNS, KC_TRNS, RESET,
-                                    KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS
+    KC_F11,  KC_F12,  _______, _______, _______,         _______, KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT,
+    _______, _______, _______, _______, _______,         _______, _______, _______, KC_PIPE, KC_ENT,
+                                    _______, TT(_SPECL), _______, _______
+  ),
+
+  [_SPECL] = LAYOUT( /* [> SPECL <] */
+    TG(_SPECL), _______, _______, _______, _______,      _______, _______, _______, _______, _______,
+    KC_MS_L, KC_MS_D, KC_MS_U, KC_MS_R, KC_MS_BTN1,         _______, _______, _______, _______, _______,
+    _______, _______, _______, _______, _______,         _______, _______, _______, _______, RESET,
+                                    _______, _______, _______, _______
   )
 };
 
