@@ -21,14 +21,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #pragma once
 
 // Enable rapid switch from tap to hold, disables double tap hold auto-repeat.
-#define TAPPING_FORCE_HOLD
+//#define TAPPING_FORCE_HOLD
 // Configure the global tapping term (default: 200ms)
-#define TAPPING_TERM 400
+#define TAPPING_TERM 250
 // Prevent normal rollover on alphas from accidentally triggering mods.
 #define IGNORE_MOD_TAP_INTERRUPT
+// Configure the global tapping toggle (defaut: 5)
+#define TAPPING_TOGGLE 2
 
 /* Select hand configuration */
-
 #define MASTER_LEFT
 // #define MASTER_RIGHT
 // #define EE_HANDS
