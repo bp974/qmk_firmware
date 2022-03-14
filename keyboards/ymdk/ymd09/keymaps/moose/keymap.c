@@ -17,6 +17,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             // when keycode QMKBEST is pressed
             SEND_STRING(SS_DOWN(X_LGUI));
             SEND_STRING(SS_TAP(X_TAB));
+            SEND_STRING(SS_UP(X_LGUI));
         } else {
         // when keycode QMKBEST is released
         }
