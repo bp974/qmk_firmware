@@ -20,6 +20,12 @@ enum ferris_tap_dances {
   TD_Q_ESC
 };
 
+enum custom_keycodes {
+  ALT_TAB = SAFE_RANGE,
+  COPY,
+  PASTE
+};
+
 // shift
 #define KC_LSHZ LSFT_T(KC_Z)
 #define KC_RLSH RSFT_T(KC_SLSH)
@@ -44,6 +50,35 @@ enum ferris_tap_dances {
 #define RES MO(_RESET)
 #define BSPCR LT(_RAISE, KC_BSPC)
 
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+  switch (keycode) {
+      case ALT_TAB:
+        if (record->event.pressed) {
+            // when keycode QMKBEST is pressed
+            SEND_STRING(SS_DOWN(X_LGUI));
+            SEND_STRING(SS_TAP(X_TAB));
+            SEND_STRING(SS_UP(X_LGUI));
+        } else {
+        // when keycode QMKBEST is released
+        }
+        break;
+    case COPY:
+        if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI));
+            SEND_STRING(SS_TAP(X_C));
+            SEND_STRING(SS_UP(X_LGUI));
+        }
+        break;
+    case PASTE:
+        if (record->event.pressed) {
+            SEND_STRING(SS_DOWN(X_LGUI));
+            SEND_STRING(SS_TAP(X_V));
+            SEND_STRING(SS_UP(X_LGUI));
+        }
+        break;
+  }
+  return true;
+};
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT( /* QWERTY */
@@ -63,7 +98,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_RAISE] = LAYOUT( /* [> RAISE <] */
     KC_ESC,   _______, _______, _______, _______,        _______, _______, _______, _______, _______,
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,           KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
-    _______, _______, _______, _______, _______,         _______, _______, _______, KC_F11,  KC_F12,
+    _______, _______, COPY ,   PASTE, _______,         _______, _______, _______, KC_F11,  KC_F12,
                                _______, KC_LSFT,         _______,_______
   ),
 
