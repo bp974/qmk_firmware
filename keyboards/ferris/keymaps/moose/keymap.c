@@ -50,6 +50,8 @@ enum custom_keycodes {
 #define RES MO(_RESET)
 #define BSPCR LT(_RAISE, KC_BSPC)
 
+#define HYPRT MEH_T(KC_T)
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   switch (keycode) {
       case ALT_TAB:
@@ -82,24 +84,24 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT( /* QWERTY */
-    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,            KC_Y,    KC_U,   KC_I,    KC_O,   KC_P,
+    KC_Q,    KC_W,    KC_E,    KC_R,    HYPRT,            KC_Y,    KC_U,   KC_I,    KC_O,   KC_P,
     HRL1   , HRL2,    HRL3,    HRL4,    HYPG ,           KC_H ,   HRR1,   HRR2,    HRR3,   HRR4,
     KC_LSHZ, KC_X,    KC_C,    KC_V,    KC_B,            KC_N,    KC_M,   KC_COMM, KC_DOT, KC_RLSH,
-                              BSPCR, KC_LSFT,            SPCET, LOWER
+                               BSPCR, KC_ENT,            SPCET, LOWER
   ),
 
   [_LOWER] = LAYOUT( /* [> LOWER <] */
-    KC_TAB, _______, _______, _______, _______,         _______, _______, _______, KC_MINS, KC_EQL,
-    KC_CAPS, _______, _______, _______, _______,          _______, KC_ENT, _______, _______, KC_QUOT,
-    KC_GRV,  KC_CAPS, _______, _______, _______,         _______, _______, KC_LBRC, KC_RBRC, KC_BSLS,
+    KC_TAB , _______, _______, _______, _______,        _______, _______, _______, KC_MINS, KC_EQL,
+    KC_CAPS, _______, _______, _______, _______,        _______, _______, _______, _______, KC_QUOT,
+    KC_GRV,  KC_CAPS, _______, _______, _______,        _______, _______, KC_LBRC, KC_RBRC, KC_BSLS,
                              KC_DELETE, KC_LSFT,         RES, _______
   ),
 
   [_RAISE] = LAYOUT( /* [> RAISE <] */
     KC_ESC,   _______, _______, _______, _______,        _______, _______, _______, _______, _______,
     KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,           KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,
-    _______, _______, COPY ,   PASTE, _______,         _______, _______, _______, KC_F11,  KC_F12,
-                               _______, KC_LSFT,         _______,_______
+    _______, _______, COPY ,   PASTE, _______,           _______, _______, _______, KC_F11,  KC_F12,
+                              _______, KC_LSFT,          _______,_______
   ),
 
   [_SPACE] = LAYOUT( /* [> SPACE <] */
