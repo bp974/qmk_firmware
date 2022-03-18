@@ -42,7 +42,7 @@ enum custom_keycodes {
 #define HRR4 MT(MOD_RCTL,KC_SCLN)
 
 #define KC_SWAP CG_TOGG // swap control and gui on both sides
-#define HYPG HYPR_T(KC_G)
+// #define HYPG HYPR_T(KC_G)
 #define SPCET LT(_SPACE, KC_SPC)
 
 // Special/layer
@@ -85,7 +85,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT( /* QWERTY */
     KC_Q,    KC_W,    KC_E,    KC_R,    HYPRT,            KC_Y,    KC_U,   KC_I,    KC_O,   KC_P,
-    HRL1   , HRL2,    HRL3,    HRL4,    HYPG ,           KC_H ,   HRR1,   HRR2,    HRR3,   HRR4,
+    HRL1   , HRL2,    HRL3,    HRL4,    KC_G ,           KC_H ,   HRR1,   HRR2,    HRR3,   HRR4,
     KC_LSHZ, KC_X,    KC_C,    KC_V,    KC_B,            KC_N,    KC_M,   KC_COMM, KC_DOT, KC_RLSH,
                                BSPCR, KC_ENT,            SPCET, LOWER
   ),
