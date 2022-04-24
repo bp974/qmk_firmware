@@ -50,6 +50,8 @@ enum corny_keycodes {
 #define RAISE MO(_RAISE)
 #define ADJUST MO(_ADJUST)
 
+#define KC_SWAP CG_TOGG // swap control and gui on both sides
+
 enum macro_keycodes {
   KC_SAMPLEMACRO,
 };
@@ -57,26 +59,26 @@ enum macro_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_TAB,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_BSPC,
+       KC_ESC,    KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,  KC_MINS,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL,   CTL_A,   ALT_S,   GUI_D,   LSF_F,    KC_G,                         KC_H,   LSF_J,   GUI_K,   ALT_L, CTL_SC,  KC_QUOT,
+       KC_TAB,   CTL_A,   ALT_S,   GUI_D,   LSF_F,    KC_G,                         KC_H,   LSF_J,   GUI_K,   ALT_L, CTL_SC,  KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT ,
+      KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_RCMD,  RAISE, KC_BSPC,     KC_SPC,  LOWER,   KC_ENT
+                                          KC_LGUI,  RAISE, KC_BSPC,     KC_SPC,  LOWER,   KC_ENT
                                       //`--------------------------'  `--------------------------'
 
   ),
 
   [_LOWER] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_ESC, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
+       KC_ESC, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL, _______, _______, _______, _______, _______,                      KC_MINS, KC_LEFT,  KC_UP , KC_DOWN,KC_RIGHT,  KC_GRV,
+       KC_TAB, _______, _______, _______, _______, _______,                      KC_BSPC, KC_LEFT,  KC_UP , KC_DOWN,KC_RIGHT,  KC_GRV,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, _______, _______, _______, _______, _______,                      KC_UNDS, KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS, _______,
+      KC_LSFT, _______, _______, _______, _______, _______,                      KC_UNDS, KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS,  KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_TRNS,  ADJUST, KC_BSPC,    KC_TRNS,   LOWER, KC_TRNS
+                                          _______,  ADJUST,  KC_DEL,    _______,   LOWER, _______
                                       //`--------------------------'  `--------------------------'
   ),
 
@@ -86,21 +88,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LCTL,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10, _______,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LSFT, KC_MPRV, KC_VOLD, KC_VOLU, KC_MNXT, KC_MPLY,                      _______, _______, _______,  KC_F11,  KC_F12, _______,
+      KC_MUTE, KC_VOLD, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                      _______, _______, _______,  KC_F11,  KC_F12, _______,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          _______,  RAISE, _______,    _______,   ADJUST, _______
+                                          _______,  RAISE,   KC_ENT,     KC_ENT,   ADJUST, _______
                                       //`--------------------------'  `--------------------------'
     ),
 
   [_ADJUST] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX,  RGBRST, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,  XXXXXXX,
+      XXXXXXX,  RGBRST, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_SWAP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   RESET,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   RESET,
-  //|--------+--------+--------+--------+--------+--------+--------|  |-----aa---+--------+--------+--------+--------+--------+--------|
-                                          KC_TRNS,  RAISE, KC_TRNS,    KC_TRNS,   LOWER, KC_TRNS
+      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_RSFT,
+  //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          _______,  RAISE, _______,    _______,   LOWER, _______
                                       //`--------------------------'  `--------------------------'
   )
 };
@@ -148,14 +150,17 @@ const char code_to_name[60] = {
     'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
     'R', 'E', 'B', 'T', '_', '-', '=', '[', ']', '\\',
-    '#', ';', '\'', '`', ',', '.', '/', ' ', ' ', ' '};
+    '#', ';', '\'', '`', ',', '.', '/', ' ', ' ', ' '
+};
 
 void set_keylog(uint16_t keycode, keyrecord_t *record) {
   char name = ' ';
-    if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
-        (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) { keycode = keycode & 0xFF; }
+  if ((keycode >= QK_MOD_TAP && keycode <= QK_MOD_TAP_MAX) ||
+    (keycode >= QK_LAYER_TAP && keycode <= QK_LAYER_TAP_MAX)) { 
+      keycode = keycode & 0xFF; 
+  }
   if (keycode < 60) {
-    name = code_to_name[keycode];
+      name = code_to_name[keycode];
   }
 
   // update keylog
