@@ -47,6 +47,7 @@ enum corny_keycodes {
 #define CTL_SC MT(MOD_RCTL, KC_SCLN)
 
 #define MEH_TAB MT(KC_MEH, KC_TAB)
+#define SPC_RSE LT(_RAISE, KC_SPC)
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
@@ -67,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH, KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI,  RAISE, KC_BSPC,     KC_SPC,  LOWER,   KC_ENT
+                                          KC_LGUI,  RAISE, KC_BSPC,     SPC_RSE,  LOWER,   KC_ENT
                                       //`--------------------------'  `--------------------------'
 
   ),
@@ -88,9 +89,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
        KC_ESC,    KC_1,    KC_2,    KC_3,    KC_4,    KC_5,                         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_LCTL,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10, _______,
+      KC_LCTL,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,                        KC_F6,   KC_F7,   KC_F8,   KC_F9,  KC_F10,  KC_F11,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      KC_MUTE, KC_VOLD, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                      _______, _______, _______,  KC_F11,  KC_F12, _______,
+      KC_MUTE, KC_VOLD, KC_MPRV, KC_MPLY, KC_MNXT, KC_VOLU,                      _______, _______, _______, _______, _______, KC_F12,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______,  RAISE,   KC_ENT,     KC_ENT,   ADJUST, _______
                                       //`--------------------------'  `--------------------------'
@@ -216,3 +217,57 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   return true;
 }
 #endif // OLED_ENABLE
+
+#ifdef RGBLIGHT_ENABLE
+    static uint16_t key_timer; // timer to track the last keyboard activity
+    static void refresh_rgb(void); // refreshes the activity timer and RGB, invoke whenever activity happens
+    static void check_rgb_timeout(void); // checks if enough time has passed for RGB to timeout
+    bool is_rgb_timeout = false; // store if RGB has timed out or not in a boolean
+
+
+    void refresh_rgb() {
+    key_timer = timer_read(); // store time of last refresh
+    if (is_rgb_timeout) { // only do something if rgb has timed out
+        print("Activity detected, removing timeout\n");
+        is_rgb_timeout = false;
+        rgblight_wakeup();
+    }
+    }
+
+    void check_rgb_timeout() {
+    if (!is_rgb_timeout && timer_elapsed(key_timer) > RGBLIGHT_TIMEOUT) {
+        rgblight_suspend();
+        is_rgb_timeout = true;
+    }
+    }
+
+
+    /* Then, call the above functions from QMK's built in post processing functions like so */
+
+    /* Runs at the end of each scan loop, check if RGB timeout has occured */
+    void housekeeping_task_user(void) {
+    #ifdef RGBLIGHT_TIMEOUT
+    check_rgb_timeout();
+    #endif
+    
+    /* rest of the function code here */
+    }
+
+    /* Runs after each key press, check if activity occurred */
+    void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
+    #ifdef RGBLIGHT_TIMEOUT
+    if (record->event.pressed) refresh_rgb();
+    #endif
+
+    /* rest of the function code here */
+    }
+
+    /* Runs after each encoder tick, check if activity occurred */
+    void post_encoder_update_user(uint8_t index, bool clockwise) {
+    #ifdef RGBLIGHT_TIMEOUT
+    refresh_rgb();
+    #endif
+    
+    /* rest of the function code here */
+    }
+#endif // RGBLIGHT_ENABLE
