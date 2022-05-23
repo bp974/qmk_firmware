@@ -32,7 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define IGNORE_MOD_TAP_INTERRUPT
 #define TAPPING_TOGGLE 2
 
-#define RGBLIGHT_TIMEOUT 300000 // 30 seconds
+#define RGBLIGHT_TIMEOUT 90000 // 90 seconds
 #ifdef RGBLIGHT_ENABLE
     #define RGBLIGHT_SLEEP
     #define RGBLIGHT_SPLIT

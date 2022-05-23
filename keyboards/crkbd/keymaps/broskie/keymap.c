@@ -75,9 +75,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   [_LOWER] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       KC_ESC, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, _______,
+       KC_ESC, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN,  KC_GRV,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-       KC_TAB, _______, _______, _______, _______, _______,                      KC_BSPC, KC_LEFT,  KC_UP , KC_DOWN,KC_RIGHT,  KC_GRV,
+       KC_TAB, _______, _______, _______, _______, _______,                      KC_HOME, KC_LEFT,  KC_UP , KC_DOWN,KC_RIGHT,  KC_END,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT, _______, _______, _______, _______, _______,                      KC_UNDS, KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS,  KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
@@ -226,19 +226,19 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
 
     void refresh_rgb() {
-    key_timer = timer_read(); // store time of last refresh
-    if (is_rgb_timeout) { // only do something if rgb has timed out
-        print("Activity detected, removing timeout\n");
-        is_rgb_timeout = false;
-        rgblight_wakeup();
-    }
+        key_timer = timer_read(); // store time of last refresh
+        if (is_rgb_timeout) { // only do something if rgb has timed out
+            print("Activity detected, removing timeout\n");
+            is_rgb_timeout = false;
+            rgblight_wakeup();
+        }
     }
 
     void check_rgb_timeout() {
-    if (!is_rgb_timeout && timer_elapsed(key_timer) > RGBLIGHT_TIMEOUT) {
-        rgblight_suspend();
-        is_rgb_timeout = true;
-    }
+        if (!is_rgb_timeout && timer_elapsed(key_timer) > RGBLIGHT_TIMEOUT) {
+            rgblight_suspend();
+            is_rgb_timeout = true;
+        }
     }
 
 
@@ -246,27 +246,29 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
     /* Runs at the end of each scan loop, check if RGB timeout has occured */
     void housekeeping_task_user(void) {
-    #ifdef RGBLIGHT_TIMEOUT
-    check_rgb_timeout();
-    #endif
+        #ifdef RGBLIGHT_TIMEOUT
+            check_rgb_timeout();
+        #endif
     
     /* rest of the function code here */
     }
 
     /* Runs after each key press, check if activity occurred */
     void post_process_record_user(uint16_t keycode, keyrecord_t *record) {
-    #ifdef RGBLIGHT_TIMEOUT
-    if (record->event.pressed) refresh_rgb();
-    #endif
+        #ifdef RGBLIGHT_TIMEOUT
+            if (record->event.pressed) {
+                refresh_rgb();
+            }
+        #endif
 
     /* rest of the function code here */
     }
 
     /* Runs after each encoder tick, check if activity occurred */
     void post_encoder_update_user(uint8_t index, bool clockwise) {
-    #ifdef RGBLIGHT_TIMEOUT
-    refresh_rgb();
-    #endif
+        #ifdef RGBLIGHT_TIMEOUT
+            refresh_rgb();
+        #endif
     
     /* rest of the function code here */
     }
