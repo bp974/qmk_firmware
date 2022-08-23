@@ -45,6 +45,7 @@ enum corny_keycodes {
 #define GUI_K MT(MOD_RGUI, KC_K)
 #define ALT_L MT(MOD_RALT, KC_L)
 #define CTL_SC MT(MOD_RCTL, KC_SCLN)
+#define MINS_ADJUST LT(_ADJUST, KC_MINS)
 
 #define HYPRT MEH_T(KC_T)
 #define EQ_RLSH RSFT_T(KC_EQL)
@@ -54,7 +55,8 @@ enum corny_keycodes {
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
-#define ADJUST MO(_ADJUST)
+#define TG_LOWER TG(_LOWER)
+//#define ADJUST MO(_ADJUST)
 
 #define KC_SWAP CG_TOGG // swap control and gui on both sides
 
@@ -65,13 +67,13 @@ enum macro_keycodes {
   const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_QWERTY] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    HYPRT,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,   KC_MINS,
+      KC_TAB,   KC_Q,    KC_W,    KC_E,    KC_R,    HYPRT,                         KC_Y,    KC_U,    KC_I,    KC_O,   KC_P,   MINS_ADJUST,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_ESC,   CTL_A,   ALT_S,   GUI_D,   LSF_F,    KC_G,                         KC_H,   LSF_J,   GUI_K,   ALT_L, CTL_SC,  KC_QUOT,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,   KC_B,                         KC_N,    KC_M, KC_COMM,  KC_DOT, KC_SLSH,  EQ_RLSH,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          KC_LGUI, KC_ENT , KC_BSPC,     SPC_RSE,  LOWER, ADJUST
+                                          KC_LGUI, KC_ENT , KC_BSPC,     SPC_RSE,  LOWER, TG_LOWER
                                       //`--------------------------'  `--------------------------'
 
   ),
@@ -105,11 +107,11 @@ enum macro_keycodes {
 
   [_ADJUST] = LAYOUT_split_3x6_3(
   //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      XXXXXXX,  RGBRST, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_SWAP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,   RESET,
+      XXXXXXX,  RGBRST, XXXXXXX, XXXXXXX, XXXXXXX, KC_SWAP,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX,                      KC_SLEP, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+      RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, KC_SLEP,                      XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, RESET,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           _______, _______, _______,   _______, _______, _______
                                       //`--------------------------'  `--------------------------'
