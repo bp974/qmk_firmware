@@ -38,9 +38,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_LSFT, KC_Z  , KC_X  , KC_C  , KC_V , KC_B  ,                         KC_N  ,  KC_M  , KC_COMM, KC_DOT , KC_SLSH, KC_RSFT,
                  KC_GRV, TG(LOWER),KC_LEFT,KC_RGHT,                                          KC_UP, KC_DOWN ,KC_LBRC, KC_RBRC,
 
-                                       KC_ESC, MEH(KC_Q),                      MEH(KC_R), MEH(KC_0),
+                                       KC_ESC, MEH(KC_E),                      MEH(KC_R), MEH(KC_0),
                                                MEH(KC_W),                      MEH(KC_Y),
-                                  TBSPC, T_DEL,MEH(KC_E),                      MEH(KC_A), KC_ENTER, SPCET
+                                  TBSPC, T_DEL,MEH(KC_q),                      MEH(KC_A), KC_ENTER, SPCET
     ),
 
     [_LOWER] = LAYOUT_5x6(
