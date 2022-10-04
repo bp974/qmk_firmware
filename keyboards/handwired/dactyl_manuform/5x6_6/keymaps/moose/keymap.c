@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                        KC_ESC, MEH(KC_E),                      MEH(KC_R), MEH(KC_0),
                                                MEH(KC_W),                      MEH(KC_Y),
-                                  TBSPC, T_DEL,MEH(KC_Q),                      MEH(KC_A), KC_ENTER, SPCET
+                               KC_BSPC, KC_DEL,MEH(KC_Q),                      MEH(KC_A), KC_ENTER, KC_SPC
     ),
 
     [_LOWER] = LAYOUT_5x6(
