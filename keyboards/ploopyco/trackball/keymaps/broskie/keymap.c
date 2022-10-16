@@ -16,20 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#define LAYER_HOLD_LIMIT 200
 
-#define LAYER_HOLD_LIMIT 400  //hold for less than 400ms to toggle RGB
+// NOTE: LT() functions only work with basic keys, aka not mouse buttons
 
 enum custom_keycodes {
-    LAYER_TAP = SAFE_RANGE,  //custom keycode, name it what you want
-    COPY,
+    COPY = SAFE_RANGE,
     PASTE,
+    MID_ENT,  // enter on long press, middle click elsewhere
 };
 
 uint16_t layer_hold_timer = 0;  //timer variable
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [0] = LAYOUT( KC_BTN1, KC_BTN3, KC_BTN2, KC_BTN4, LAYER_TAP),
-    [1] = LAYOUT( COPY, KC_ENT, PASTE, _______, _______ ),
+    [0] = LAYOUT( KC_BTN1, MID_ENT, KC_BTN2, COPY, PASTE),
+    [1] = LAYOUT( _______, _______, _______, _______, _______ ),
     [2] = LAYOUT( _______, _______, _______, _______, _______ ),
     [3] = LAYOUT( _______, _______, _______, _______, _______ ),
     [4] = LAYOUT( _______, _______, _______, _______, _______ ),
@@ -40,25 +41,37 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
-        case LAYER_TAP:
-            if (record->event.pressed) {        //when RGB_MACRO is pressed
-                layer_hold_timer = timer_read();  //  mark the time it was pressed
-                layer_on(1);                //  go to (layer)
-            } else {                            //when RGB_MACRO is released
-                layer_off(1);               //  leave (layer)
-                if (timer_elapsed(layer_hold_timer) < LAYER_HOLD_LIMIT)
-                    tap_code16(KC_BTN5);        //  toggle RGB if held less than RGB_HOLD_LIMIT ms
-            }
-            break;
-
         case COPY:
-            if (record->event.pressed) {
-                SEND_STRING(SS_LCTRL("c"));
+            if (record->event.pressed) {        
+                layer_hold_timer = timer_read();              
+            } else {                           
+                if (timer_elapsed(layer_hold_timer) > LAYER_HOLD_LIMIT) {
+                    SEND_STRING(SS_LCTRL("c"));  
+                } else {
+                    tap_code16(KC_BTN4);
+                }
             }
             break;
         case PASTE:
-            if (record->event.pressed) {
-                SEND_STRING(SS_LCTRL("v"));
+            if (record->event.pressed) {        
+                layer_hold_timer = timer_read();              
+            } else {                           
+                if (timer_elapsed(layer_hold_timer) > LAYER_HOLD_LIMIT) {
+                    SEND_STRING(SS_LCTRL("v"));  
+                } else {
+                    tap_code16(KC_BTN5);
+                }
+            }
+            break;
+        case MID_ENT:
+            if (record->event.pressed) {        
+                layer_hold_timer = timer_read();              
+            } else {                           
+                if (timer_elapsed(layer_hold_timer) > LAYER_HOLD_LIMIT) {
+                    tap_code16(KC_ENT);
+                } else {
+                    tap_code16(KC_BTN3);
+                }
             }
             break;
         default:
