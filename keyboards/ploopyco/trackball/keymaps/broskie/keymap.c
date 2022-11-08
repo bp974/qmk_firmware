@@ -24,12 +24,13 @@ enum custom_keycodes {
     COPY = SAFE_RANGE,
     PASTE,
     MID_ENT,  // enter on long press, middle click elsewhere
+    FAST_PASS, // fast pass used for work on long press, right click elsewhere
 };
 
 uint16_t layer_hold_timer = 0;  //timer variable
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
-    [0] = LAYOUT( KC_BTN1, MID_ENT, KC_BTN2, COPY, PASTE),
+    [0] = LAYOUT( KC_BTN1, MID_ENT, FAST_PASS, COPY, PASTE),
     [1] = LAYOUT( _______, _______, _______, _______, _______ ),
     [2] = LAYOUT( _______, _______, _______, _______, _______ ),
     [3] = LAYOUT( _______, _______, _______, _______, _______ ),
@@ -71,6 +72,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                     tap_code16(KC_ENT);
                 } else {
                     tap_code16(KC_BTN3);
+                }
+            }
+            break;
+        case FAST_PASS:
+            if (record->event.pressed) {        
+                layer_hold_timer = timer_read();              
+            } else {                           
+                if (timer_elapsed(layer_hold_timer) > LAYER_HOLD_LIMIT) {
+                    SEND_STRING("SecretPass");
+                } else {
+                    tap_code16(KC_BTN2);
                 }
             }
             break;
