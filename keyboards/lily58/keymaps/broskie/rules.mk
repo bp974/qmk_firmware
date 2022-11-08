@@ -11,7 +11,7 @@ SWAP_HANDS_ENABLE = no      # Enable one-hand typing
 OLED_DRIVER_ENABLE = yes
 OLED_ENABLE = yes     # OLED display
 OLED_DRIVER = SSD1306    # OLED display
-TAP_DANCE_ENABLE = yes
+TAP_DANCE_ENABLE = no
 DYNAMIC_TAPPING_TERM_ENABLE = yes
 
 # If you want to change the display of OLED, you need to change here
