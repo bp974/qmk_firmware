@@ -20,6 +20,8 @@
 #include QMK_KEYBOARD_H
 
 #define INDICATOR_BRIGHTNESS 30
+#define LAYER_HOLD_LIMIT 200
+uint16_t layer_hold_timer = 0;  // timer variable
 
 #define HSV_OVERRIDE_HELP(h, s, v, Override) h, s , Override
 #define HSV_OVERRIDE(hsv, Override) HSV_OVERRIDE_HELP(hsv,Override)
@@ -93,7 +95,8 @@ enum custom_keycodes {
     KC_LOWER,
     KC_RAISE,
     KC_ADJUST,
-    KC_D_MUTE
+    KC_D_MUTE,
+    FAST_PASS // fast pass used for work on long press, End otherwise
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -105,7 +108,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * | TAB  |   Q  |   W  |   E  |   R  |   T  |                    |   Y  |   U  |   I  |   O  |   P  |  -   |
  * |------+------+------+------+------+------|                    |------+------+------+------+------+------|
  * | LCTR |   A  |   S  |   D  |   F  |   G  |-------.    ,-------|   H  |   J  |   K  |   L  |   ;  |  '   |
- * |------+------+------+------+------+------| MUTE  |    |DISCORD|------+------+------+------+------+------|
+ * |------+------+------+------+------+------| MUTE  |    |KC_MPLY|------+------+------+------+------+------|
  * |LShift|   Z  |   X  |   C  |   V  |   B  |-------|    |-------|   N  |   M  |   ,  |   .  |   /  |RShift|
  * `-----------------------------------------/       /     \      \-----------------------------------------'
  *            | Bspc | WIN  |RAISE | Enter| /Space  /       \Enter \  |SPACE |LOWER | RCTR | RAlt |
@@ -120,9 +123,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //|------+-------+--------+--------+--------+------|                   |--------+-------+--------+--------+--------+---------|
   KC_LCTRL, CTL_A,  ALT_S,   GUI_D,   LSF_F,   KC_G,                      KC_H,    RSF_J,  GUI_K,   ALT_L,   CTL_SC,  KC_QUOT,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
-  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_MUTE,    KC_D_MUTE,KC_N,  KC_M,   KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+  KC_LSFT,  KC_Z,   KC_X,    KC_C,    KC_V,    KC_B,  KC_MPLY,    KC_MUTE,KC_N,    KC_M,   KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
   //|------+-------+--------+--------+--------+------|  ===  |   |  ===  |--------+-------+--------+--------+--------+---------|
-                 KC_BSPC, KC_LALT, KC_LGUI, KC_RAISE, KC_BSPC,    KC_SPC,  KC_LOWER, KC_ENT,  KC_RCTRL, KC_RALT
+                 KC_BSPC, KC_LALT, KC_LGUI, KC_RAISE, KC_BSPC,    KC_SPC,  KC_LOWER, KC_ENT,  KC_RCTRL, FAST_PASS
   //            \--------+--------+--------+---------+-------|   |--------+---------+--------+---------+-------/
 ),
 
@@ -537,6 +540,17 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 unregister_mods(mod_config(MOD_MEH));
                 unregister_code(KC_UP);
             }
+        case FAST_PASS:
+          if (record->event.pressed) {        
+              layer_hold_timer = timer_read();              
+          } else {                           
+              if (timer_elapsed(layer_hold_timer) > LAYER_HOLD_LIMIT) {
+                  SEND_STRING("########");
+              } else {
+                  tap_code16(KC_RALT);
+              }
+          }
+          break;
     }
     return true;
 }
@@ -550,32 +564,32 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
         } else {
             tap_code(KC_VOLD);
         }
-		} else if (index == 1) {
-			switch (get_highest_layer(layer_state)) {
-				case _COLEMAK:
-				case _QWERTY:
-				case _COLEMAKDH:
-					if (clockwise) {
-						tap_code(KC_PGDOWN);
-					} else {
-						tap_code(KC_PGUP);
-					}
-				break;
-			case _RAISE:
-			case _LOWER:
-					if (clockwise) {
-						tap_code(KC_DOWN);
-					} else {
-						tap_code(KC_UP);
-					}
-				break;
-			default:
-					if (clockwise) {
-						tap_code(KC_WH_D);
-					} else {
-						tap_code(KC_WH_U);
-					}
-				break;
+	} else if (index == 1) {
+        switch (get_highest_layer(layer_state)) {
+            case _COLEMAK:
+            case _QWERTY:
+            case _COLEMAKDH:
+                if (clockwise) {
+                    tap_code(KC_PGDOWN);
+                } else {
+                    tap_code(KC_PGUP);
+                }
+            break;
+        case _RAISE:
+        case _LOWER:
+                if (clockwise) {
+                    tap_code(KC_DOWN);
+                } else {
+                    tap_code(KC_UP);
+                }
+            break;
+        default:
+                if (clockwise) {
+                    tap_code(KC_WH_D);
+                } else {
+                    tap_code(KC_WH_U);
+                }
+            break;
 		}
     }
     return true;
