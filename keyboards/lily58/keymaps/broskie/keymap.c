@@ -261,7 +261,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
               layer_hold_timer = timer_read();              
           } else {                           
               if (timer_elapsed(layer_hold_timer) > LAYER_HOLD_LIMIT) {
-                  SEND_STRING("Netapp123!");
+                  SEND_STRING("#######");
               } else {
                   tap_code16(KC_END);
               }
