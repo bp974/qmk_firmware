@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Prevent normal rollover on alphas from accidentally triggering mods.
 #define IGNORE_MOD_TAP_INTERRUPT
 // Configure the global tapping toggle (defaut: 5)
-#define TAPPING_TOGGLE 2
+#define TAPPING_TOGGLE 3
 
 /* Select hand configuration */
 #define MASTER_LEFT

@@ -46,11 +46,11 @@ enum custom_keycodes {
 
 uint16_t layer_hold_timer = 0;  //timer variable
 
-#define RAISE TT(_RAISE)
-#define LOWER TT(_LOWER)
-#define MACOS TT(_MACOS)
-#define QWRTY TT(_QWRTY)
-#define SPECL TT(_SPECL)
+#define RAISE MO(_RAISE)
+#define LOWER MO(_LOWER)
+#define MACOS MO(_MACOS)
+#define QWRTY MO(_QWRTY)
+#define SPECL MO(_SPECL)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
