@@ -59,7 +59,7 @@ enum corny_keycodes {
 
 #define LOWER MO(_LOWER)
 #define RAISE MO(_RAISE)
-#define TT_LOWER TT(_LOWER)
+//#define TT_LOWER TT(_LOWER)
 //#define ADJUST MO(_ADJUST)
 
 #define MAC CG_TOGG // swap control and gui on both sides
@@ -73,7 +73,7 @@ enum corny_keycodes {
   //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       KC_LSFT,    KC_Z,    KC_X,    KC_C,    KC_V,   KC_B,                         KC_N,  KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_RSFT,
   //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                         RAISE ,KC_LGUI, KC_BSPC,     SPC_RSE,  KC_ENT, TT_LOWER
+                                         RAISE ,KC_LGUI, KC_BSPC,     SPC_RSE,  KC_ENT, LOWER
                                       //`--------------------------'  `--------------------------'
 
   ),
