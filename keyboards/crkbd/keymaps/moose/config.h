@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define EE_HANDS
 
 #define TAPPING_TERM 220
-#define TAPPING_TOGGLE 2
+#define TAPPING_TOGGLE 1
 
 #define RGBLIGHT_TIMEOUT 300000 // 30 seconds
 #ifdef RGBLIGHT_ENABLE
